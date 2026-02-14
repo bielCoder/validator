@@ -1,0 +1,25 @@
+
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: docker/php/Dockerfile
+    container_name: validator-backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: docker/apache/Dockerfile
+    container_name: validator-frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend/public:/usr/local/apache2/htdocs
+    depends_on:
+      - backend
