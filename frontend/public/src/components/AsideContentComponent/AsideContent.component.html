@@ -1,0 +1,42 @@
+<div class="main-container">
+    <div class="info-container">
+        <h3>Instruções</h3>
+        <ul>
+            <li>A - Os colchetes abertos devem ser fechados pelo mesmo tipo de colchetes.</li>
+            <li>B - Os colchetes abertos devem ser fechados na ordem correta.</li>
+            <li>C - Cada parêntese fechado tem um parêntese aberto correspondente do mesmo tipo.</li>
+        </ul>
+        <p>Exemplos de resultados esperados:</p>
+        <ul>
+            <li>1. Entrada: “()” </li>
+            <li>1. Saída: Texto <span class="valid">Válido</span></li>
+            <li class="lign"></li>
+            <li>2. Entrada: “()[]{}”</li>
+            <li>2. Saída: Texto <span class="valid">Válido</span></li>
+            <li class="lign"></li>
+            <li>3. Entrada: “(]”</li>
+            <li>3. Saída: Texto <span class="invalid">Inválido</span></li>
+            <li class="lign"></li>
+            <li>4. Entrada: “texto (texto [texto {texto}])”</li>
+            <li>4. Saída: Texto <span class="valid">Válido</span></li>
+            <li class="lign"></li>
+            <li>5. Entrada: “([)]”</li>
+            <li>5. Saída: Texto <span class="invalid">Inválido</span></li>
+            <li class="lign"></li>
+        </ul>
+        <form>
+            <div class="form-group">
+                 <input type="text" id="text" placeholder=" " autocomplete="off" name="text">
+                 <label for="text">Validador de Textos</label>
+            </div>
+            <div class="form-group">
+                <button type="submit">verificar</button>
+            </div>
+        </form>
+        <app-loading-spinner></app-loading-spinner>
+        <p class="result">Resultado: <span id="status"></span></p>
+
+    </div>
+</div>
+
+

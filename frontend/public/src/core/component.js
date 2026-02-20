@@ -6,39 +6,95 @@ export function Component(config) {
             constructor(selector) {
                 super();
                 this.selector = selector || config.selector;
-                this.container = document.querySelector(this.selector);
+                this.container = this.selector
+                    ? document.querySelector(this.selector)
+                    : null;
+
+                this.host = null;
             }
 
-            async mount() {
+            async mount(externalContainer = null) {
 
-                    if (!this.container) return;
+                const host = externalContainer || this.container;
+                if (!host) return;
 
-                    const response = await fetch(config.templateUrl);
-                    let html = await response.text();
+                this.host = host;
 
-                    // 🔥 Interpolação ANTES de renderizar
-                    html = html.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
-                        return this[key] ?? "";
-                    });
+                const response = await fetch(config.templateUrl);
+                let html = await response.text();
 
-                    const shadow = this.container.attachShadow({ mode: "open" });
+                // 🔥 Interpolação simples
+                html = html.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
+                    return this[key] ?? "";
+                });
 
-                    let styleContent = "";
-                    if (config.styleUrl) {
-                        styleContent = await fetch(config.styleUrl).then(r => r.text());
-                    }
+                let styleContent = "";
+                if (config.styleUrl) {
+                    styleContent = await fetch(config.styleUrl)
+                        .then(r => r.text());
+                }
+
+                let renderTarget;
+
+                // 🔥 Shadow ou não
+                if (config.shadow !== false) {
+
+                    const shadow = host.shadowRoot || host.attachShadow({ mode: "open" });
 
                     shadow.innerHTML = `
                         <style>${styleContent}</style>
                         ${html}
                     `;
 
-                    if (typeof this.onInit === "function") {
-                        this.onInit(shadow);
-                    }
+                    renderTarget = shadow;
+
+                } else {
+
+                    host.innerHTML = `
+                        <style>${styleContent}</style>
+                        ${html}
+                    `;
+
+                    renderTarget = host;
                 }
 
+                // 🔥 Lifecycle
+                if (typeof this.onInit === "function") {
+                    this.onInit(renderTarget);
+                }
 
+            
+              // 🔥 Auto mount children
+                if (config.children && Array.isArray(config.children)) {
+
+                    this.childrenInstances = [];
+
+                    config.children.forEach(child => {
+
+                        const elements = renderTarget.querySelectorAll(child.selector);
+
+                        elements.forEach(el => {
+
+                            const instance = new child.component();
+                            instance.mount(el);
+
+                            this.childrenInstances.push({
+                                selector: child.selector,
+                                instance: instance
+                            });
+
+                        });
+
+                    });
+                }
+
+            // 🔥 Lifecycle (AGORA DEPOIS DOS FILHOS)
+            if (typeof this.onInit === "function") {
+                this.onInit(renderTarget);
+            }
+
+
+            }
         }
     }
 }

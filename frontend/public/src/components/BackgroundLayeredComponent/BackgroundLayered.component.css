@@ -2,7 +2,7 @@
 
 .background-container {    
     width: 100%;
-    height: 70vh;
+    height: 100vh;
     position: relative;
     margin: 0;
     padding: 0;
@@ -11,18 +11,29 @@
     justify-content: center;
 }
 
+
+.image-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    gap: 35em;
+}
+
 .black-mirror {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 70vh;
+    height: 100vh;
     background-color: black;
     opacity: 85%;
 }
 
 .background-image {
-    width: 100%;
+    position: absolute;
+    width: 800px;
     height: 100vh;
     background-image: url('/assets/background.gif');
     background-repeat: no-repeat;
@@ -32,9 +43,38 @@
     transform: scaleX(-1);
 }
 
+@media screen and (max-width:500px) {
+    
+}
 
-@media screen and (max-width: 680px) {
+@media screen and (min-width: 500px) and (max-width:1200px) {
     .black-mirror {
        opacity: 97%;
     }
+
+    .background-container {
+        flex-direction: column;
+    }
+
+     .background-image {
+       width: 480px;
+       background-size: cover;
+    }
+
+    .image-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+     .image-container {
+        gap: 0;
+        justify-content: center;
+    }
+
+    .container-config-image {
+        display: flex;
+        justify-content: center;
+    }
+  
 }
+
