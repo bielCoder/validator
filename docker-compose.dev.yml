@@ -5,8 +5,7 @@ services:
     volumes:
       - ./backend:/var/www/html
     command: >
-      sh -c "composer install &&
-             apache2-foreground"
+      sh -c "composer install && apache2-foreground"
 
   frontend:
     volumes:
