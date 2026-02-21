@@ -1,11 +1,32 @@
 pipeline {
     agent any
 
+    environment {
+        COMPOSE_BASE = "docker-compose.yml"
+        COMPOSE_PROD = "docker-compose.prod.yml"
+    }
+
     stages {
-        stage('Build containers') {
+
+        stage('Stop containers') {
             steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d --build'
+                sh """
+                    docker compose \
+                    -f $COMPOSE_BASE \
+                    -f $COMPOSE_PROD \
+                    down || true
+                """
+            }
+        }
+
+        stage('Build and Start containers') {
+            steps {
+                sh """
+                    docker compose \
+                    -f $COMPOSE_BASE \
+                    -f $COMPOSE_PROD \
+                    up -d --build
+                """
             }
         }
 
@@ -13,6 +34,15 @@ pipeline {
             steps {
                 sh 'docker ps'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deploy realizado com sucesso 🚀'
+        }
+        failure {
+            echo 'Falha no deploy ❌'
         }
     }
 }
