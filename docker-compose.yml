@@ -1,13 +1,13 @@
+version: "3.9"
+
 services:
-
   backend:
-  build:
-    context: ./backend
-    dockerfile: docker/php/Dockerfile
-  container_name: validator-backend
-  ports:
-    - "8000:80"
-
+    build:
+      context: ./backend
+      dockerfile: docker/php/Dockerfile
+    container_name: validator-backend
+    ports:
+      - "8000:80"
 
   frontend:
     build:
@@ -16,9 +16,5 @@ services:
     container_name: validator-frontend
     ports:
       - "3000:80"
-    volumes:
-      - ./frontend/public:/usr/local/apache2/htdocs
     depends_on:
       - backend
-
-
