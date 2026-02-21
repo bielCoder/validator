@@ -1,32 +1,17 @@
 pipeline {
     agent any
 
-    environment {
-        COMPOSE_BASE = "docker-compose.yml"
-        COMPOSE_PROD = "docker-compose.prod.yml"
-    }
-
     stages {
 
         stage('Stop containers') {
             steps {
-                sh """
-                    docker compose \
-                    -f $COMPOSE_BASE \
-                    -f $COMPOSE_PROD \
-                    down || true
-                """
+                sh 'docker compose -f docker-compose.yml down || true'
             }
         }
 
         stage('Build and Start containers') {
             steps {
-                sh """
-                    docker compose \
-                    -f $COMPOSE_BASE \
-                    -f $COMPOSE_PROD \
-                    up -d --build
-                """
+                sh 'docker compose -f docker-compose.yml up -d --build'
             }
         }
 
