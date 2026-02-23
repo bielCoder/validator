@@ -1,0 +1,1 @@
+*Validador - Sistema que valida texto*
