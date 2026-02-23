@@ -52,4 +52,4 @@ cd validador
 
 docker compose up --build -d 
 
-by: Gabriel Henrique Carvalho de Sousa
+by: Gabriel Henrique 
