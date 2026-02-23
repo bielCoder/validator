@@ -5,13 +5,13 @@ pipeline {
 
         stage('Stop containers') {
             steps {
-                sh 'docker compose -f docker-compose.yml down || true'
+                sh 'docker compose -f docker-compose.base.yml down || true'
             }
         }
 
         stage('Build and Start containers') {
             steps {
-                sh 'docker compose -f docker-compose.yml up -d --build'
+                sh 'docker compose -f docker-compose.base.yml up -d --build'
             }
         }
 
