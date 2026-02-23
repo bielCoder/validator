@@ -3,10 +3,15 @@ pipeline {
 
     stages {
 
-        stage('Build containers') {
+        stage('Stop containers') {
             steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d --build'
+                sh 'docker compose -f docker-compose.yml down || true'
+            }
+        }
+
+        stage('Build and Start containers') {
+            steps {
+                sh 'docker compose -f docker-compose.yml up -d --build'
             }
         }
 
@@ -14,6 +19,15 @@ pipeline {
             steps {
                 sh 'docker ps'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deploy realizado com sucesso 🚀'
+        }
+        failure {
+            echo 'Falha no deploy ❌'
         }
     }
 }
