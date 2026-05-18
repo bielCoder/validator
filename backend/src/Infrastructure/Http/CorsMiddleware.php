@@ -17,4 +17,4 @@ final class CorsMiddleware
             exit; // PARA AQUI
         }
     }
-}
+}   
