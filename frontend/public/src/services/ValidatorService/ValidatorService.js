@@ -1,6 +1,6 @@
 export class ValidatorService {
 
-    #baseUrl = "http://localhost:8080";
+    #baseUrl = "http://192.168.1.7:8000";
 
     async validator(text) {
         const response = await fetch(`${this.#baseUrl}/validate`, {
